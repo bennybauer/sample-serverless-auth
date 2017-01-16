@@ -1,0 +1,15 @@
+h2 {
+    font-family: fantasy;
+    font-variant: small-caps;
+    font-weight: bold;
+    background-image: url(https://source.unsplash.com/NensSRftBZk);
+}
+
+a {
+    font-family: sans-serif;
+}
+
+button {
+    border-width: 2px;
+    font-family: sans-serif;
+}
