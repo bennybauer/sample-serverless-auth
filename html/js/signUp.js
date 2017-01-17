@@ -11,7 +11,6 @@ function signUp() {
     var result = document.getElementById('result');
     var email = document.getElementById('email');
     var password = document.getElementById('password');
-
     result.innerHTML = 'Sign Up...';
 
     // validate input
@@ -68,3 +67,4 @@ form.addEventListener('submit', function(evt) {
     evt.preventDefault();
     signUp();
 });
+

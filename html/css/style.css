@@ -1,22 +1,24 @@
 body {
     font-family: sans-serif;
 }
+
 .header {
-    height: 100;
+    height: 100px;
     background-image: url(https://source.unsplash.com/gYl-UtwNg_I/1500x400);
-    padding-left: 10;
+    padding-left: 10px;
 }
 
 h1 {
     color: #ffc600;
     font-size: 1rem;
-    padding-top: 10;
+    font-weight: 400;
+    padding-top: 10px;
 }
 
 h2 {
     font-family: monospace;
     font-size: 4rem;
-    margin: 5;
+    margin: 5px;
 }
 
 a {
@@ -25,12 +27,12 @@ a {
     font: inherit;
 }
 
-p {
+form, p {
     font-weight: 300;
-    font-size: 35;
+    font-size: 35px;
 }
 
-.content {
+.buttons {
     display: flex;
     flex: 1;
     flex-grow: 1;
@@ -41,17 +43,31 @@ p {
     justify-content: center;
 }
 
-.content a {
+.buttons a, button {
     border: .3rem solid black;
     border-radius: .5rem;
     margin: 1rem;
     font-size: 1.5rem;
+    font-weight: 300;
     padding: 1rem .5rem;
     transition: all .08s ease;
     width: 8rem;
-    height: 3rem;
     text-align: center;
     color: #ffc600;
     background: rgba(0, 93, 156, 0.85);
     text-shadow: 0 0 0.25rem black;
+}
+
+.content {
+    display: block;
+    font-size: 1.5rem;
+    padding: 5px;
+    padding-top: 2rem;
+}
+
+.message {
+    padding: 10px;
+    font-size: 1rem;
+    color: #6a3399;
+    text-align: center;
 }

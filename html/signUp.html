@@ -14,20 +14,24 @@
     <h1><a href="index.html">Authentication Service</a></h1>
     <h2>Sign Up</h2>
   </div>
-  <form role="form" id="signup-form">
-    <div>
-      <label for="email">Email:</label>
-      <input type="email" id="email">
+  <form role="form" id="signup-form" action="signUp()">
+    <div class="content">
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+      </div>
+      <div class="message" id="result">
+      </div>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password">
+    <div class="buttons">
+    <button type="input" id="signup-button">Sign Up</button>
+    <a href="index.html">Back</a>
     </div>
-    <button type="submit" id="signup-button">Sign Up</button>
   </form>
-  <div id="result">
-  </div>
-  <a href="index.html">Back</a>
   <script src="js/signUp.js"></script>
 </body>
 
