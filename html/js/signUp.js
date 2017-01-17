@@ -5,7 +5,7 @@
 
 // var lambda = new AWS.Lambda();
 // const API_URL = process.env.API_URL;
-const API_URL = 'https://c0jwjc1tua.execute-api.eu-west-1.amazonaws.com/dev';
+const API_URL = 'https://30km9ychy6.execute-api.eu-west-1.amazonaws.com/dev';
 
 function signUp() {
     var result = document.getElementById('result');
