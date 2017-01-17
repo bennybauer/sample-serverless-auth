@@ -4,14 +4,21 @@
 // });
 
 // var lambda = new AWS.Lambda();
-// const API_URL = process.env.API_URL;
-const API_URL = 'https://30km9ychy6.execute-api.eu-west-1.amazonaws.com/dev';
+var apiUrl;
+getConfig('js/config.json', (err, data) => {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        apiUrl = data.apiUrl;
+    }
+});
 
 function signUp() {
     var result = document.getElementById('result');
     var email = document.getElementById('email');
     var password = document.getElementById('password');
-    result.innerHTML = 'Sign Up...';
+    result.innerHTML = 'Signing up...';
 
     // validate input
     if (!email.value) {
@@ -25,7 +32,7 @@ function signUp() {
         };
 
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', `${API_URL}/create`, true);
+        xhr.open('POST', `${apiUrl}/create`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {

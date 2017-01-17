@@ -9,7 +9,8 @@ const ses = new AWS.SES();
 
 module.exports.create = (event, context, callback) => {
   const body = JSON.parse(event.body);
-  const email = body.email;
+  const email = body.email.toLowerCase();
+  
   cryptoUtils.computeHash(body.password, (err, salt, hash) => {
     if (err) callback(`Error in hash: ${err}`);
     else {
