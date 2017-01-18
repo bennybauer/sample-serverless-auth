@@ -1,29 +1,7 @@
-// AWS.config.region = 'eu-west-1';
-// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-//     IdentityPoolId: '<Fill Me>'
-// });
-
-// var lambda = new AWS.Lambda();
-var apiUrl;
-
-function handleConfig(callback) {
-  if (apiUrl) {
-      callback(null, apiUrl);
-  } else {
-    getConfig('js/config.json', (err, data) => {
-      if (err) {
-        console.error(err);
-        callback(err);
-      } else {
-        apiUrl = data.apiUrl;
-        callback(null, apiUrl);
-      }
-    });
-  }
-}
-
 function signUp() {
-  handleConfig((err, url) => {
+  getConfig('js/config.json', (err, config) => {
+    console.log(config);
+    console.log("url " + config.apiUrl);
     if (err) return;
 
     var result = document.getElementById('result');
@@ -51,7 +29,7 @@ function signUp() {
       };
 
       let xhr = new XMLHttpRequest();
-      xhr.open('POST', `${url}/create`, true);
+      xhr.open('POST', `${config.apiUrl}/create`, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -70,21 +48,6 @@ function signUp() {
       }
 
       xhr.send(JSON.stringify(input));
-
-      // lambda.invoke({
-      //     FunctionName: 'createUser',   // TODO: function name should be from config
-      //     Payload: JSON.stringify(input)
-      // }, function(err, data) {
-      //     if (err) console.error(err, err.stack);
-      //     else {
-      //         var output = JSON.parse(data.payload);
-      //         if (output.created) {
-      //             result.innerHTML = `User ${input.email} created. Please check your email to enable login.`;
-      //         } else {
-      //             result.innerHTML = `User ${input.email} <b>not</b> created.`;
-      //         }
-      //     }
-      // });
     }
   });
 }

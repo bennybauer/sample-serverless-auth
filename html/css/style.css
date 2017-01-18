@@ -71,3 +71,23 @@ form, p {
     color: #6a3399;
     text-align: center;
 }
+
+input {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    box-shadow: 1px 1px 4px #EBEBEB;
+    -moz-box-shadow: 1px 1px 4px #EBEBEB;
+    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 6px 4px 4px 4px;
+    margin: 0.75rem;
+    outline: none;
+}
+
+input:focus {
+    border: 1px solid #00a6cc;
+}

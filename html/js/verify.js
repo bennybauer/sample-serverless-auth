@@ -1,5 +1,3 @@
-var apiUrl;
-
 function getUrlParams() {
   var p = {};
   var match,
@@ -16,24 +14,8 @@ function getUrlParams() {
   return p;
 }
 
-function handleConfig(callback) {
-  if (apiUrl) {
-    callback(null, apiUrl);
-  } else {
-    getConfig('js/config.json', (err, data) => {
-      if (err) {
-        console.error(err);
-        callback(err);
-      } else {
-        apiUrl = data.apiUrl;
-        callback(null, apiUrl);
-      }
-    });
-  }
-}
-
 function init() {
-  handleConfig((err, url) => {
+  getConfig('js/config.json', (err, config) => {
     if (err) return;
 
     var urlParams = getUrlParams();
@@ -47,7 +29,7 @@ function init() {
       };
 
       let xhr = new XMLHttpRequest();
-      xhr.open('POST', `${url}/verify`, true);
+      xhr.open('POST', `${config.apiUrl}/verify`, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
