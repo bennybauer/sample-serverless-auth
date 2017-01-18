@@ -28,26 +28,22 @@ function init() {
         verify: urlParams['verify']
       };
 
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', `${config.apiUrl}/verify`, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          if (xhr.status == 200) {
-            const output = JSON.parse(xhr.response);
-
-            if (output.verified) {
-              result.innerHTML = `User ${input.email} has been <b>verified</b>, thanks!`;
-            } else {
-              result.innerHTML = `User ${input.email} has <b>not</b> been verified, sorry.`;
-            }
+      fetch(`${config.apiUrl}/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input)
+        })
+        .then(blob => blob.json())
+        .then(output => {
+          if (output.verified) {
+            result.innerHTML = `User ${input.email} has been <b>verified</b>, thanks!`;
           } else {
-            console.error(xhr.statusText);
+            result.innerHTML = `User ${input.email} has <b>not</b> been verified, sorry.`;
           }
-        }
-      }
-
-      xhr.send(JSON.stringify(input));
+        })
+        .catch(err => console.error(err));
     }
   });
 }

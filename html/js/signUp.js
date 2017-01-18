@@ -1,7 +1,5 @@
 function signUp() {
   getConfig('js/config.json', (err, config) => {
-    console.log(config);
-    console.log("url " + config.apiUrl);
     if (err) return;
 
     var result = document.getElementById('result');
@@ -28,26 +26,22 @@ function signUp() {
         password: password.value
       };
 
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', `${config.apiUrl}/create`, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          if (xhr.status == 200) {
-            const output = JSON.parse(xhr.response);
-
-            if (output.created) {
-              result.innerHTML = `User ${input.email} created. Please check your email to enable login.`;
-            } else {
-              result.innerHTML = `User ${input.email} <b>not</b> created.`;
-            }
+      fetch(`${config.apiUrl}/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input)
+        })
+        .then(blob => blob.json())
+        .then(output => {
+          if (output.created) {
+            result.innerHTML = `User ${input.email} created. Please check your email to enable login.`;
           } else {
-            console.error(xhr.statusText);
+            result.innerHTML = `User ${input.email} <b>not</b> created.`;
           }
-        }
-      }
-
-      xhr.send(JSON.stringify(input));
+        })
+        .catch(err => console.error(err));
     }
   });
 }
