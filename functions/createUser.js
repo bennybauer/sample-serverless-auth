@@ -11,11 +11,13 @@ const ses = new AWS.SES();
 module.exports.create = (event, context, callback) => {
   const body = JSON.parse(event.body);
   const email = body.email.toLowerCase();
+  const firstname = body.firstname;
+  const lastname = body.lastname;
   
   cryptoUtils.computeHash(body.password, (err, salt, hash) => {
     if (err) callback(`Error in hash: ${err}`);
     else {
-      storeUser(email, hash, salt, (err, token) => {
+      storeUser(email, hash, salt, firstname, lastname, (err, token) => {
         if (err) {
           console.error(err);
           if (err.code == 'ConditionalCheckFailedException') {
@@ -25,7 +27,7 @@ module.exports.create = (event, context, callback) => {
             callback(`Error in storeUser: ${err}`);
           }
         } else {
-          sendVerificationEmail(email, token, (err, data) => {
+          sendVerificationEmail(email, firstname, token, (err, data) => {
             if (err) callback(`Error in sendVerificationEmail: ${err}`);
             else callback(null, responseUtils.generateResponse({ created: true }));
           });
@@ -35,7 +37,7 @@ module.exports.create = (event, context, callback) => {
   });
 };
 
-function storeUser(email, password, salt, fn) {
+function storeUser(email, password, salt, firstname, lastname, fn) {
   const len = 128;
   crypto.randomBytes(len, (err, token) => {
     if (err) return fn(err);
@@ -57,6 +59,12 @@ function storeUser(email, password, salt, fn) {
         },
         verifyToken: {
           S: token
+        },
+        firstname: {
+          S: firstname
+        },
+        lastname: {
+          S: lastname
         }
       },
       ConditionExpression: 'attribute_not_exists (email)'
@@ -67,7 +75,7 @@ function storeUser(email, password, salt, fn) {
   });
 }
 
-function sendVerificationEmail(email, token, fn) {
+function sendVerificationEmail(email, firstname, token, fn) {
   const subject = `Verification email for ${process.env.EXTERNAL_NAME}`;
   const verificationLink = `${process.env.VERIFICATION_PAGE}?email=${encodeURIComponent(email)}&verify=${token}`;
   ses.sendEmail({
@@ -87,7 +95,7 @@ function sendVerificationEmail(email, token, fn) {
           <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
           <title>${subject}</title></head>
           <body>
-            Please <a href="${verificationLink}">click here</a> to verify your email address
+            Hi ${firstname}!<br><br>Please <a href="${verificationLink}">click here</a> to verify your email address.
           </body></html>`
         }
       }

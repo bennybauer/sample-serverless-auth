@@ -29,16 +29,24 @@ function signUp() {
     var result = document.getElementById('result');
     var email = document.getElementById('email');
     var password = document.getElementById('password');
+    var firstname = document.getElementById('firstname');
+    var lastname = document.getElementById('lastname');
     result.innerHTML = 'Signing up...';
 
     // validate input
     if (!email.value) {
       result.innerHTML = 'Please specify your email address.'
+    } else if (!firstname.value) {
+      result.innerHTML = 'Please specify your first name.'
+    } else if (!lastname.value) {
+      result.innerHTML = 'Please specify your last name.'
     } else if (!password.value) {
       result.innerHTML = 'Please specify your password.'
     } else {
       var input = {
         email: email.value,
+        firstname: firstname.value,
+        lastname: lastname.value,
         password: password.value
       };
 

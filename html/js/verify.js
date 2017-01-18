@@ -40,7 +40,7 @@ function init() {
     if (!('email' in urlParams) || !('verify' in urlParams)) {
       result.innerHTML = 'Invalid link';
     } else {
-      result.innerHTML = 'Verifying...';
+      result.innerHTML = 'Verifying user...';
       var input = {
         email: urlParams['email'],
         verify: urlParams['verify']
