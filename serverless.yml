@@ -55,6 +55,13 @@ functions:
           path: create
           method: post
           cors: true
+  verifyUser:
+    handler: functions/verifyUser.verify
+    events:
+      - http:
+          path: verify
+          method: post
+          cors: true
 
 # you can add CloudFormation resource templates here
 resources:
@@ -105,6 +112,7 @@ resources:
               Action:
                 - dynamodb:GetItem
                 - dynamodb:PutItem
+                - dynamodb:UpdateItem
                 - dynamodb:Scan
                 - dynamodb:Query
               Resource:

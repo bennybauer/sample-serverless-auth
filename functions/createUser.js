@@ -3,6 +3,7 @@
 const AWS = require('aws-sdk');
 const crypto = require('crypto');
 const cryptoUtils = require('./lib/cryptoUtils');
+const responseUtils = require('./lib/responseUtils');
 
 const dynamodb = new AWS.DynamoDB();
 const ses = new AWS.SES();
@@ -19,27 +20,14 @@ module.exports.create = (event, context, callback) => {
           console.error(err);
           if (err.code == 'ConditionalCheckFailedException') {
             console.log(`userId '${email}' already found`)
-            // userId already found
-            callback(null, {
-              statusCode: 200,
-              headers: {
-                'Access-Control-Allow-Origin': '*'
-              },
-              body: JSON.stringify({ created: false })
-            });
+            callback(null, responseUtils.generateResponse({ created: false }));
           } else {
             callback(`Error in storeUser: ${err}`);
           }
         } else {
           sendVerificationEmail(email, token, (err, data) => {
             if (err) callback(`Error in sendVerificationEmail: ${err}`);
-            else callback(null,  {
-              statusCode: 200,
-              headers: {
-                'Access-Control-Allow-Origin': '*'
-              },
-              body: JSON.stringify({ created: true })
-            });
+            else callback(null, responseUtils.generateResponse({ created: true }));
           });
         }
       });

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sls deploy
-sh post-sls.sh
+sls deploy -v
+./post-sls.sh
