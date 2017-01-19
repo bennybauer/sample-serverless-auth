@@ -1,21 +1,21 @@
-var crypto = require('crypto');
+const crypto = require('crypto');
 
 function computeHash(password, salt, fn) {
   // Bytesize
-  var len = 512;
-  var iterations = 4096;
-  var digest = 'sha512';
-  if (3 == arguments.length) {
-    crypto.pbkdf2(password, salt, iterations, len, digest, function (err, derivedKey) {
+  const len = 512;
+  const iterations = 4096;
+  const digest = 'sha512';
+  if (arguments.length === 3) {
+    crypto.pbkdf2(password, salt, iterations, len, digest, (err, derivedKey) => {
       if (err) return fn(err);
       fn(null, salt, derivedKey.toString('base64'));
     });
   } else {
-    fn = salt;
-    crypto.randomBytes(len, function (err, salt) {
+    const callback = salt;
+    crypto.randomBytes(len, (err, data) => {
       if (err) return fn(err);
-      salt = salt.toString('base64');
-      computeHash(password, salt, fn);
+      const generatedSalt = data.toString('base64');
+      computeHash(password, generatedSalt, callback);
     });
   }
 }

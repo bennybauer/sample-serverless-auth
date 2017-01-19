@@ -5,7 +5,8 @@
   "main": "html/index.js",
   "scripts": {
     "test": "istanbul cover _mocha --report lcovonly -- -R spec",
-    "cover": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "cover": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "lint": "./node_modules/.bin/eslint functions"
   },
   "author": "",
   "dependencies": {
@@ -14,6 +15,12 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.15",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0"

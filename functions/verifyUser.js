@@ -1,32 +1,32 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB();
 const responseUtils = require('./lib/responseUtils');
+
+const dynamodb = new AWS.DynamoDB();
 
 function getUser(email, callback) {
   dynamodb.getItem({
     TableName: process.env.USERS_TABLE,
     Key: {
       email: {
-        S: email
-      }
-    }
+        S: email,
+      },
+    },
   }, (err, data) => {
     if (err) return callback(err);
-    else {
-      if ('Item' in data) {
-        const verified = data.Item.verified.BOOL;
-        let verifyToken = null;
 
-        if (!verified) {
-          verifyToken = data.Item.verifyToken.S;
-        }
+    if ('Item' in data) {
+      const verified = data.Item.verified.BOOL;
+      let verifyToken = null;
 
-        callback(null, verified, verifyToken);
-      } else {
-        callback(null, null);
+      if (!verified) {
+        verifyToken = data.Item.verifyToken.S;
       }
+
+      callback(null, verified, verifyToken);
+    } else {
+      callback(null, null);
     }
   });
 }
@@ -36,20 +36,20 @@ function updateUser(email, callback) {
     TableName: process.env.USERS_TABLE,
     Key: {
       email: {
-        S: email
-      }
+        S: email,
+      },
     },
     AttributeUpdates: {
       verified: {
         Action: 'PUT',
         Value: {
-          BOOL: true
-        }
+          BOOL: true,
+        },
       },
       verifyToken: {
-        Action: 'DELETE'
-      }
-    }
+        Action: 'DELETE',
+      },
+    },
   }, callback);
 }
 
@@ -62,18 +62,24 @@ module.exports.verify = (event, context, callback) => {
     if (err) callback(`Error in getUser: ${err}`);
     else if (verified) {
       console.log(`User already verified: ${email}`);
-      callback(null, responseUtils.generateResponse({ verified: true }));
-    } else if (verifyToken == correctToken) {
-      updateUser(email, (err, data) => {
-        if (err) callback(`Error in updateUser: ${err}`);
+      callback(null, responseUtils.generateResponse({
+        verified: true,
+      }));
+    } else if (verifyToken === correctToken) {
+      updateUser(email, (err2) => {
+        if (err2) callback(`Error in updateUser: ${err}`);
         else {
           console.log(`User verified: ${email}`);
-          callback(null, responseUtils.generateResponse({ verified: true }));
+          callback(null, responseUtils.generateResponse({
+            verified: true,
+          }));
         }
       });
     } else {
       console.log(`User not verified: ${email}`);
-      callback(null, responseUtils.generateResponse({ verified: false }));
+      callback(null, responseUtils.generateResponse({
+        verified: false,
+      }));
     }
   });
 };

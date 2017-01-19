@@ -8,69 +8,41 @@ const responseUtils = require('./lib/responseUtils');
 const dynamodb = new AWS.DynamoDB();
 const ses = new AWS.SES();
 
-module.exports.create = (event, context, callback) => {
-  const body = JSON.parse(event.body);
-  const email = body.email.toLowerCase();
-  const firstname = body.firstname;
-  const lastname = body.lastname;
-  
-  cryptoUtils.computeHash(body.password, (err, salt, hash) => {
-    if (err) callback(`Error in hash: ${err}`);
-    else {
-      storeUser(email, hash, salt, firstname, lastname, (err, token) => {
-        if (err) {
-          console.error(err);
-          if (err.code == 'ConditionalCheckFailedException') {
-            console.log(`userId '${email}' already found`)
-            callback(null, responseUtils.generateResponse({ created: false }));
-          } else {
-            callback(`Error in storeUser: ${err}`);
-          }
-        } else {
-          sendVerificationEmail(email, firstname, token, (err, data) => {
-            if (err) callback(`Error in sendVerificationEmail: ${err}`);
-            else callback(null, responseUtils.generateResponse({ created: true }));
-          });
-        }
-      });
-    }
-  });
-};
-
 function storeUser(email, password, salt, firstname, lastname, fn) {
   const len = 128;
-  crypto.randomBytes(len, (err, token) => {
+  crypto.randomBytes(len, (err, data) => {
     if (err) return fn(err);
-    token = token.toString('hex');
+
+    const token = data.toString('hex');
     dynamodb.putItem({
       TableName: process.env.USERS_TABLE,
       Item: {
         email: {
-          S: email
+          S: email,
         },
         passwordHash: {
-          S: password
+          S: password,
         },
         passwordSalt: {
-          S: salt
+          S: salt,
         },
         verified: {
-          BOOL: false
+          BOOL: false,
         },
         verifyToken: {
-          S: token
+          S: token,
         },
         firstname: {
-          S: firstname
+          S: firstname,
         },
         lastname: {
-          S: lastname
-        }
+          S: lastname,
+        },
       },
-      ConditionExpression: 'attribute_not_exists (email)'
-    }, (err, data) => {
-      if (err) return fn(err);
-      else fn(null, token);
+      ConditionExpression: 'attribute_not_exists (email)',
+    }, (err2) => {
+      if (err2) return fn(err);
+      return fn(null, token);
     });
   });
 }
@@ -82,12 +54,12 @@ function sendVerificationEmail(email, firstname, token, fn) {
     Source: process.env.EMAIL_RESOURCE,
     Destination: {
       ToAddresses: [
-        email
-      ]
+        email,
+      ],
     },
     Message: {
       Subject: {
-        Data: subject
+        Data: subject,
       },
       Body: {
         Html: {
@@ -96,9 +68,38 @@ function sendVerificationEmail(email, firstname, token, fn) {
           <title>${subject}</title></head>
           <body>
             Hi ${firstname}!<br><br>Please <a href="${verificationLink}">click here</a> to verify your email address.
-          </body></html>`
-        }
-      }
-    }
+          </body></html>`,
+        },
+      },
+    },
   }, fn);
 }
+
+module.exports.create = (event, context, callback) => {
+  const body = JSON.parse(event.body);
+  const email = body.email.toLowerCase();
+  const firstname = body.firstname;
+  const lastname = body.lastname;
+
+  cryptoUtils.computeHash(body.password, (err, salt, hash) => {
+    if (err) callback(`Error in hash: ${err}`);
+    else {
+      storeUser(email, hash, salt, firstname, lastname, (err2, token) => {
+        if (err2) {
+          console.error(err);
+          if (err2.code === 'ConditionalCheckFailedException') {
+            console.log(`userId '${email}' already found`);
+            callback(null, responseUtils.generateResponse({ created: false }));
+          } else {
+            callback(`Error in storeUser: ${err}`);
+          }
+        } else {
+          sendVerificationEmail(email, firstname, token, (err3) => {
+            if (err3) callback(`Error in sendVerificationEmail: ${err}`);
+            else callback(null, responseUtils.generateResponse({ created: true }));
+          });
+        }
+      });
+    }
+  });
+};
