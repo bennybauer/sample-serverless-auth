@@ -46,6 +46,9 @@ package:
   exclude:
     - html/**
     - .vscode/**
+    - converage
+    - test
+    - functions/test
 
 functions:
   createUser:
