@@ -1,4 +1,6 @@
 # Sample Authorization Service
+[![](https://travis-ci.org/bennybauer/serverless-auth-sample.svg?branch=master)](https://travis-ci.org/bennybauer/serverless-auth-sample)
+
 A sample authorization service based on the [AWS Lambda in Action](https://www.manning.com/books/aws-lambda-in-action) sample. 
 This service however, doesn't invoke lambda directly from the client (using AWS Congnito identity pools) but through AWS API Gateway.
 a [`post-sls.sh`](post-sls.sh) script is used for automating the static content deployment.
