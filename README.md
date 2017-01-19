@@ -1,5 +1,6 @@
 # Sample Authorization Service
-[![](https://travis-ci.org/bennybauer/serverless-auth-sample.svg?branch=master)](https://travis-ci.org/bennybauer/serverless-auth-sample)
+[![Build Status](https://travis-ci.org/bennybauer/serverless-auth-sample.svg?branch=master)](https://travis-ci.org/bennybauer/serverless-auth-sample)
+[![Coverage Status](https://coveralls.io/repos/github/bennybauer/serverless-auth-sample/badge.svg?branch=master)](https://coveralls.io/github/bennybauer/serverless-auth-sample?branch=master)
 
 A sample authorization service based on the [AWS Lambda in Action](https://www.manning.com/books/aws-lambda-in-action) sample. 
 This service however, doesn't invoke lambda directly from the client (using AWS Congnito identity pools) but through AWS API Gateway.

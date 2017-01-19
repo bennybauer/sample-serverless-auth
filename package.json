@@ -4,7 +4,8 @@
   "description": "Authentication service sample",
   "main": "html/index.js",
   "scripts": {
-    "test": "istanbul cover _mocha --report lcovonly -- -R spec"
+    "test": "istanbul cover _mocha --report lcovonly -- -R spec",
+    "cover": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "author": "",
   "dependencies": {

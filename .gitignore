@@ -63,4 +63,7 @@ jspm_packages
 ### Mac ###
 .DS_Store
 
+### Local coveralls.io ###
+.coveralls.yml
+
 # End of https://www.gitignore.io/api/node,serverless,visualstudiocode
