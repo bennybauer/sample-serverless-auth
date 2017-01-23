@@ -1,4 +1,5 @@
 # Sample Authorization Service
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7dff34a9f5d46a2ad868456954e2d24)](https://www.codacy.com/app/bennybauer/serverless-auth-sample?utm_source=github.com&utm_medium=referral&utm_content=bennybauer/serverless-auth-sample&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/bennybauer/serverless-auth-sample.svg?branch=master)](https://travis-ci.org/bennybauer/serverless-auth-sample)
 [![Coverage Status](https://coveralls.io/repos/github/bennybauer/serverless-auth-sample/badge.svg?branch=master)](https://coveralls.io/github/bennybauer/serverless-auth-sample?branch=master)
 
